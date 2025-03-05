@@ -8,14 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    let appTitle: String = "Patungan"
+    @State private var totalAmount: String = ""
+    @State private var numberOfPeople: Int = 1
+    
+    func calculateTotalAmount() -> Double {
+        let total = Double(totalAmount) ?? 0
+        let finalAmount = total / Double(numberOfPeople)
+        return finalAmount
+    }
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            Form {
+                
+                // Capitalize Header
+                Section(header: Text("Total Amount").font(.headline)) {
+                    TextField("Total Amount", text: $totalAmount)
+                        .keyboardType(.decimalPad)
+                }
+                Section(header: Text("Jumlah Orang").font(.headline)) {
+                    Stepper(value: $numberOfPeople, in: 1...10) {
+                        Text("\(numberOfPeople) orang")
+                    }
+                }
+                Section(header: Text("Biaya per Orang").font(.headline)) {
+                    Text("Rp\(calculateTotalAmount().formatted())")
+                }
+            }.navigationTitle(appTitle)
         }
-        .padding()
     }
 }
 
